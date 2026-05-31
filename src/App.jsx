@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { missionData } from './missions'
 import './App.css'
 
 const astronauts = [
@@ -123,11 +124,73 @@ function ShipHub({ astronaut, onSelectMission }) {
   )
 }
 
-function MissionPlaceholder({ mission, onBack }) {
+function MissionView({ mission, onFinish, onBack }) {
+  const [stopIndex, setStopIndex] = useState(0)
+  const [revealed, setRevealed] = useState(false)
+
+  const stop = mission.stops[stopIndex]
+  const isLast = stopIndex === mission.stops.length - 1
+
+  function handleNext() {
+    if (isLast) {
+      onFinish()
+    } else {
+      setStopIndex(stopIndex + 1)
+      setRevealed(false)
+    }
+  }
+
+  return (
+    <div className="screen mission-view">
+      <header className="stop-header">
+        <button className="back-btn" onClick={onBack}>
+          ← Ship Hub
+        </button>
+        <p className="stop-progress">
+          Stop {stopIndex + 1} of {mission.stops.length}
+        </p>
+      </header>
+
+      <h1 className="stop-title">{stop.title}</h1>
+
+      <section className="companion-section">
+        <div className="companion-avatar">🛸</div>
+        <div className="companion-bubble">
+          <p className="companion-name">Cosmo</p>
+          <p>{stop.companionLine}</p>
+        </div>
+      </section>
+
+      <section className="stop-content">
+        <p className="stop-hook">{stop.hook}</p>
+
+        {!revealed ? (
+          <button className="reveal-btn" onClick={() => setRevealed(true)}>
+            Tap to find out
+          </button>
+        ) : (
+          <div className="stop-reveal">
+            <p className="reveal-answer">{stop.reveal}</p>
+            <p className="reveal-detail">{stop.detail}</p>
+            <p className="reveal-source">Source: {stop.source}</p>
+          </div>
+        )}
+      </section>
+
+      {revealed && (
+        <button className="launch-btn" onClick={handleNext}>
+          {isLast ? 'Finish mission' : 'Next →'}
+        </button>
+      )}
+    </div>
+  )
+}
+
+function MissionComplete({ onBack }) {
   return (
     <div className="screen mission-placeholder">
-      <h1>{mission.emoji} {mission.title}</h1>
-      <p>Mission starting — coming soon.</p>
+      <h1>Quiz — coming soon.</h1>
+      <p>You've completed all the stops! The quiz will go here.</p>
       <button className="back-btn" onClick={onBack}>
         ← Back to Ship Hub
       </button>
@@ -146,14 +209,22 @@ function App() {
   }
 
   function handleSelectMission(mission) {
-    setActiveMission(mission)
-    setScreen('mission')
+    const data = missionData[mission.id]
+    if (data) {
+      setActiveMission(data)
+      setScreen('mission')
+    }
+  }
+
+  if (screen === 'mission-complete') {
+    return <MissionComplete onBack={() => setScreen('ship-hub')} />
   }
 
   if (screen === 'mission') {
     return (
-      <MissionPlaceholder
+      <MissionView
         mission={activeMission}
+        onFinish={() => setScreen('mission-complete')}
         onBack={() => setScreen('ship-hub')}
       />
     )
