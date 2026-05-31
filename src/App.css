@@ -1,0 +1,121 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  gap: 2rem;
+  min-height: 100svh;
+  justify-content: center;
+}
+
+/* --- Title --- */
+.title-section {
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+/* --- Companion --- */
+.companion-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 420px;
+}
+
+.companion-avatar {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.companion-bubble {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.companion-name {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+/* --- Avatar picker --- */
+.avatar-section {
+  text-align: center;
+}
+
+.avatar-grid {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.avatar-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--text-h);
+}
+
+.avatar-card:hover {
+  border-color: var(--accent-border);
+}
+
+.avatar-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.avatar-emoji {
+  font-size: 2.5rem;
+}
+
+.avatar-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* --- Launch button --- */
+.launch-btn {
+  padding: 0.75rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.launch-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.launch-btn:not(:disabled):hover {
+  opacity: 0.85;
+}
+
+/* --- Ship hub placeholder --- */
+.ship-hub {
+  opacity: 0.7;
+}
