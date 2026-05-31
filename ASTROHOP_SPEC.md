@@ -29,6 +29,7 @@ friendly companion voice.
 Stylized, cartoon-ish, 2D. Charming and clear. Visuals must match the real concept
 (a recognizable Saturn with rings, correct relative scale vibes) but do NOT need to be
 photorealistic. Looks serve the learning. NO 3D, NO open world.
+Visual style is locked — see STYLE_GUIDE.md.
 
 ## Core loop (the reusable "mission template")
 1. Character select (astronaut avatar) — once per session.

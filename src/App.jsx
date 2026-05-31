@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { missionData } from './missions'
+import StyleTest from './StyleTest' // TEMPORARY — remove to restore normal app
 import './App.css'
 
 const astronauts = [
@@ -273,8 +274,13 @@ function Quiz({ mission, onDone, onReplay }) {
   )
 }
 
+// TEMPORARY — remove this line and the import above to restore normal app
+const STYLE_TEST = false
+
 function App() {
   const [screen, setScreen] = useState('character-select')
+
+  if (STYLE_TEST) return <StyleTest />
   const [astronaut, setAstronaut] = useState(null)
   const [activeMission, setActiveMission] = useState(null)
 
