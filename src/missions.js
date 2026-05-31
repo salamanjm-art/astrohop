@@ -33,6 +33,27 @@ const solarSystem = {
       companionLine: "Whatever number you're picturing, go higher.",
     },
   ],
+  quiz: [
+    {
+      question: "How much of the solar system's mass is the Sun?",
+      options: ['About 50%', 'About 75%', 'About 99.86%', 'About 99.99%'],
+      correctIndex: 2,
+      why: 'The Sun is ~99.86% of all mass — everything else is the leftover 0.14%.',
+    },
+    {
+      question: 'On Venus, which lasts longer?',
+      options: ['One day', 'One year', "They're equal"],
+      correctIndex: 0,
+      why: 'Venus spins so slowly that rotation takes longer than one orbit around the Sun.',
+    },
+    {
+      question:
+        'Roughly how many confirmed moons does Saturn have (as of 2026)?',
+      options: ['About 30', 'About 80', 'About 285'],
+      correctIndex: 2,
+      why: '285 confirmed — more than every other planet combined.',
+    },
+  ],
 }
 
 export const missionData = {

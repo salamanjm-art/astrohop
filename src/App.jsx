@@ -186,14 +186,89 @@ function MissionView({ mission, onFinish, onBack }) {
   )
 }
 
-function MissionComplete({ onBack }) {
+function Quiz({ mission, onDone, onReplay }) {
+  const [qIndex, setQIndex] = useState(0)
+  const [picked, setPicked] = useState(null)
+  const [score, setScore] = useState(0)
+  const [finished, setFinished] = useState(false)
+
+  const q = mission.quiz[qIndex]
+  const isLast = qIndex === mission.quiz.length - 1
+  const locked = picked !== null
+
+  function handlePick(i) {
+    if (locked) return
+    setPicked(i)
+    if (i === q.correctIndex) setScore(score + 1)
+  }
+
+  function handleNext() {
+    if (isLast) {
+      setFinished(true)
+    } else {
+      setQIndex(qIndex + 1)
+      setPicked(null)
+    }
+  }
+
+  if (finished) {
+    const perfect = score === mission.quiz.length
+    const message = perfect
+      ? 'Perfect score — you were paying attention!'
+      : score >= Math.ceil(mission.quiz.length / 2)
+        ? 'Nice work, explorer — you remembered the big stuff!'
+        : "Don't worry — the universe is full of surprises. Try again!"
+
+    return (
+      <div className="screen quiz-results">
+        <h1>
+          {score} of {mission.quiz.length}
+        </h1>
+        <p className="results-message">{message}</p>
+        <div className="results-buttons">
+          <button className="launch-btn" onClick={onDone}>
+            Back to Ship Hub
+          </button>
+          <button className="back-btn" onClick={onReplay}>
+            Replay quiz
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="screen mission-placeholder">
-      <h1>Quiz — coming soon.</h1>
-      <p>You've completed all the stops! The quiz will go here.</p>
-      <button className="back-btn" onClick={onBack}>
-        ← Back to Ship Hub
-      </button>
+    <div className="screen quiz-view">
+      <header className="stop-header">
+        <p className="stop-progress">
+          Question {qIndex + 1} of {mission.quiz.length}
+        </p>
+      </header>
+
+      <h2 className="quiz-question">{q.question}</h2>
+
+      <div className="quiz-options">
+        {q.options.map((opt, i) => {
+          let cls = 'quiz-option'
+          if (locked) {
+            if (i === q.correctIndex) cls += ' correct'
+            else if (i === picked) cls += ' wrong'
+          }
+          return (
+            <button key={i} className={cls} onClick={() => handlePick(i)}>
+              {opt}
+            </button>
+          )
+        })}
+      </div>
+
+      {locked && <p className="quiz-why">{q.why}</p>}
+
+      {locked && (
+        <button className="launch-btn" onClick={handleNext}>
+          {isLast ? 'See results' : 'Next →'}
+        </button>
+      )}
     </div>
   )
 }
@@ -216,15 +291,33 @@ function App() {
     }
   }
 
-  if (screen === 'mission-complete') {
-    return <MissionComplete onBack={() => setScreen('ship-hub')} />
+  if (screen === 'quiz') {
+    return (
+      <Quiz
+        key={activeMission.id + '-quiz'}
+        mission={activeMission}
+        onDone={() => setScreen('ship-hub')}
+        onReplay={() => setScreen('quiz-replay')}
+      />
+    )
+  }
+
+  if (screen === 'quiz-replay') {
+    return (
+      <Quiz
+        key={activeMission.id + '-replay-' + Date.now()}
+        mission={activeMission}
+        onDone={() => setScreen('ship-hub')}
+        onReplay={() => setScreen('quiz')}
+      />
+    )
   }
 
   if (screen === 'mission') {
     return (
       <MissionView
         mission={activeMission}
-        onFinish={() => setScreen('mission-complete')}
+        onFinish={() => setScreen('quiz')}
         onBack={() => setScreen('ship-hub')}
       />
     )
